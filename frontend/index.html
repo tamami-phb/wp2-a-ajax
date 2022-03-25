@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Aplikasi Mahasiswa</title>
+    </head>
+    <body>
+        <h1>Aplikasi Mahasiswa</h1>
+        <!-- <p id="keterangan"></p> -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>NIM</th>
+                    <th>NAMA</th>
+                    <th>KELAS</th>
+                </tr>
+            </thead>
+            <tbody id="isi">
+            </tbody>
+        </table>
+
+<script>
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost/backend/list_data.php", true);
+    xhttp.send();
+    xhttp.onload = function() {
+        //alert(this.responseText);
+        dataArray = JSON.parse(this.responseText);
+        // document.getElementById("keterangan").innerHTML = dataArray[0].nama;
+        isi = "";
+        for(i=0; i<dataArray.length; i++) {
+            isi += "<tr>" + 
+                "<td>" + dataArray[i].nim + "</td>" + 
+                "<td>" + dataArray[i].nama + "</td>" + 
+                "<td>" + dataArray[i].kelas + "</td>" + 
+              "</tr>";
+        }
+        document.getElementById("isi").innerHTML = isi;
+    }
+</script>
+    </body>
+</html>
