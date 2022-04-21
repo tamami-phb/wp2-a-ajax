@@ -1,12 +1,14 @@
 <html>
     <head>
         <title>Aplikasi Mahasiswa</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     </head>
     <body>
         <h1>Aplikasi Mahasiswa</h1>
         <!-- <p id="keterangan"></p> -->
 
-        <a href="tambah.html">Tambah</a>
+        <!-- <a href="tambah.html">Tambah</a> -->
+        <button id="tambah">Tambah</button>
 
         <table border="1">
             <thead>
@@ -21,23 +23,59 @@
         </table>
 
 <script>
-    const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "../backend/list_data.php", true);
-    xhttp.send();
-    xhttp.onload = function() {
-        //alert(this.responseText);
-        dataArray = JSON.parse(this.responseText);
-        // document.getElementById("keterangan").innerHTML = dataArray[0].nama;
-        isi = "";
-        for(i=0; i<dataArray.length; i++) {
-            isi += "<tr>" + 
-                "<td>" + dataArray[i].nim + "</td>" + 
-                "<td>" + dataArray[i].nama + "</td>" + 
-                "<td>" + dataArray[i].kelas + "</td>" + 
-              "</tr>";
-        }
-        document.getElementById("isi").innerHTML = isi;
-    }
+    $(document).ready(function() {
+        $.get("../backend/list_data.php", function(resp) {
+            data = JSON.parse(resp);
+            isi = "";
+            for(i=0; i<data.length; i++) {
+                isi += "<tr>" + 
+                    "<td>" + data[i].nim + "</td>" + 
+                    "<td>" + data[i].nama + "</td>" + 
+                    "<td>" + data[i].kelas + "</td>" + 
+                    '<td><button id="hapus" nim="' + data[i].nim + '">Hapus</button></td>'+
+                "</tr>";
+            }
+            $("#isi").html(isi);
+        });
+    });
+
+    $(document).on('click', '#hapus', function() {
+        console.log("hapus nim=" + $(this).attr("nim"));
+        req = new Object();
+        req.nim = $(this).attr("nim");
+        $.post('../backend/hapus.php', JSON.stringify(req), 
+            function(resp) {
+                result = JSON.parse(resp);
+                if(result.status == "ok") {
+                    alert("data berhasil terhapus");
+                    window.location.href="index.html";
+                } else {
+                    alert("data gagal terhapus");
+                }
+            });
+    });
+
+
+    $(document).on('click', '#tambah', function() {
+        window.location.href = "tambah.html";
+    });
+    // const xhttp = new XMLHttpRequest();
+    // xhttp.open("GET", "../backend/list_data.php", true);
+    // xhttp.send();
+    // xhttp.onload = function() {
+    //     //alert(this.responseText);
+    //     dataArray = JSON.parse(this.responseText);
+    //     // document.getElementById("keterangan").innerHTML = dataArray[0].nama;
+    //     isi = "";
+    //     for(i=0; i<dataArray.length; i++) {
+    //         isi += "<tr>" + 
+    //             "<td>" + dataArray[i].nim + "</td>" + 
+    //             "<td>" + dataArray[i].nama + "</td>" + 
+    //             "<td>" + dataArray[i].kelas + "</td>" + 
+    //           "</tr>";
+    //     }
+    //     document.getElementById("isi").innerHTML = isi;
+    // }
 </script>
     </body>
 </html>
