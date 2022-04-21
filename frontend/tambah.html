@@ -5,57 +5,29 @@
     </head>
     <body>
         <h3>Formulir Pendaftaran Mahasiswa</h3>
-        <form method="post" action="">
-            NIM <input type="text" id="nim" required><br>
-            NAMA <input type="text" id="nama"><br>
-            KELAS <input type="text" id="kelas"><br>
-            <input type="submit" value="Simpan" class="simpan">
-        </form>
+        NIM <input type="text" id="nim" required><br>
+        NAMA <input type="text" id="nama"><br>
+        KELAS <input type="text" id="kelas"><br>
+        <button class="simpan">Simpan</button>
 
 <script>
-    $(".simpan").click(function() {
-        var snim = $("#nim").val();
-        var snama = $("#nama").val();
-        var skelas = $("#kelas").val();
+    $(document).on('click', ".simpan", function() {
+        var mhs = new Object();
+        mhs.nim = $("#nim").val();
+        mhs.nama = $("#nama").val();
+        mhs.kelas = $("#kelas").val();
+        $.post('../backend/tambah.php', JSON.stringify(mhs),
+            function(resp, status) {
+                result = JSON.parse(resp);
+                if(result.status == "ok") {
+                    alert("data berhasil tersimpan");
+                    window.location.href = "index.html";
+                } else {
+                    alert("data gagal tersimpan");
+                }
+            });
 
-        var obj = new Object();
-        obj.nim = snim;
-        obj.nama = snama;
-        obj.kelas = skelas;
-        
-        $.ajax({
-            url: "/backend/test.php", 
-            type: "POST", 
-            method: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            data: { nim: snim, nama: snama, kelas: skelas },
-            success: function(data, status, xhr) {
-                alert("sukses");
-                alert(data);
-                alert(status);
-                mhs = JSON.parse(data);
-                alert(mhs.nim);
-            },
-            error: function(err) {
-                alert("error: " + JSON.stringify(err));
-            } 
-        }).done(function(done) {
-            alert("done");
-        });
     });
-    // var xhttp = new XMLHttpRequest();
-    // xhttp.open("POST", "http://localhost/backend/test.php", true);
-    // var obj = {
-    //     nim: document.getElementById("nim").value,
-    //     nama: document.getElementById("nama").value,
-    //     kelas: document.getElementById("kelas").value
-    // };
-    // xhttp.send(obj);
-    // xhttp.onload = function() {
-    //     //data = JSON.parse(xhttp.responseText);
-    //     alert(JSON.stringify(xhttp.responseText));
-    // }
 </script>
     </body>
 </html>

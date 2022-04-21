@@ -16,6 +16,5 @@ if($num > 0) {
     $resp->status = "gagal";
 }
 
-header('Content-Type: application/json');
 echo json_encode($resp);
 ?>
