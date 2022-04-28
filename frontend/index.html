@@ -33,6 +33,7 @@
                     "<td>" + data[i].nama + "</td>" + 
                     "<td>" + data[i].kelas + "</td>" + 
                     '<td><button id="hapus" nim="' + data[i].nim + '">Hapus</button></td>'+
+                    '<td><button id="edit" nim="' + data[i].nim + '">Ubah</button></td>';
                 "</tr>";
             }
             $("#isi").html(isi);
@@ -59,23 +60,10 @@
     $(document).on('click', '#tambah', function() {
         window.location.href = "tambah.html";
     });
-    // const xhttp = new XMLHttpRequest();
-    // xhttp.open("GET", "../backend/list_data.php", true);
-    // xhttp.send();
-    // xhttp.onload = function() {
-    //     //alert(this.responseText);
-    //     dataArray = JSON.parse(this.responseText);
-    //     // document.getElementById("keterangan").innerHTML = dataArray[0].nama;
-    //     isi = "";
-    //     for(i=0; i<dataArray.length; i++) {
-    //         isi += "<tr>" + 
-    //             "<td>" + dataArray[i].nim + "</td>" + 
-    //             "<td>" + dataArray[i].nama + "</td>" + 
-    //             "<td>" + dataArray[i].kelas + "</td>" + 
-    //           "</tr>";
-    //     }
-    //     document.getElementById("isi").innerHTML = isi;
-    // }
+    
+    $(document).on('click', '#edit', function() {
+        window.location.href = "edit.html?nim=" + $(this).attr('nim');
+    })
 </script>
     </body>
 </html>
